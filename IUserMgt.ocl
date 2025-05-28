@@ -1,0 +1,12 @@
+context IUserMgt::login(email: String, password: String, role: String): Boolean
+pre:
+    -- Email dan password tidak boleh kosong
+    email <> '' AND password <> '' AND
+    -- Harus ada user yang memiliki email, password, role sesuai
+    User.allInstances()->exists(u | u.email = email AND u.password = password AND u.role = role)
+post:
+    -- Setelah login, sesi aktif, email dan role tersimpan, serta hasilnya true
+    session.isActive = true AND
+    session.user.email = email AND
+    session.user.role = role AND
+    result = true

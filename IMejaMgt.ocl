@@ -1,0 +1,51 @@
+context IMejaMgt::showMeja(): Set(Meja)
+pre:
+    -- Meja harus terdapat di database
+    Meja.allInstances()->exists(m | m.mejaID = mejaID)
+post:
+    -- Mengembalikan seluruh meja yang statusnya true / tersedia
+    result = Meja.allInstances()->select(m | m.status = true)
+
+
+context IMejaMgt::createMeja(mejaID: String, kapasitas: Integer): Meja
+pre:
+    -- ID meja harus unik dan kapasitas lebih dari 0
+    Meja.allInstances()->forAll(m | m.mejaID <> mejaID) AND kapasitas > 0
+post:
+    -- Meja baru berhasil dibuat dan terimpan dalam sistem
+    let m: Meja = result in
+        m.mejaID = mejaID AND
+        m.kapasitas = kapasitas AND
+        Meja.allInstances()->include(m)
+
+
+context IMejaMgt::updateMeja(
+    mejaID: String
+    kapasitas: Integer,
+    ruangan: String,
+    status: Boolean,
+    jadwal: DateTime
+): Boolean
+pre:
+    -- Meja dengan ID tersebut harus ada
+    Meja.allInstances()->exists(m | m.mejaID = mejaID)
+post:
+    -- update atribut sesuai input yang tidak undefined, dan mengembalikan true jika berhasil
+    let m: Meja = Meja.allInstances()->any(x | x.mejaID = mejaID) in
+        (
+            (not kapasitas.oclIsUndefined() implies m.kapasitas = kapasitas) AND
+            (not ruangan.oclIsUndefined() implies m.ruangan = ruangan) AND
+            (not status.oclIsUndefined() implies m.status = status) AND
+            (not jadwal.oclIsUndefined() implies m.jadwal = jadwal)
+        ) AND
+        result = true
+
+
+context IMejaMgt::deleteMeja(mejaID: Integer): Boolean
+pre:
+    -- Meja dengan ID tersebut harus ada
+    Meja.allInstances()->exists(m | m.mejaID = mejaID)
+post:
+    -- Meja dihapus dari daftar
+    not Meja.allInstances()->exists(m | m.mejaID = mejaID) AND
+    result = true

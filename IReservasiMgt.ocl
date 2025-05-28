@@ -1,0 +1,28 @@
+context IReservasiMgt::showReservasi(): Set(Reservasi)
+pre:
+  -- User saat ini harus berperan sebagai admin
+  session.user.role = 'admin'
+post:
+  -- Mengembalikan semua data reservasi
+  result = Reservasi.allInstances()
+
+
+context IReservasiMgt::statusReservasi(): Set(Reservasi)
+pre:
+  -- Harus login sebagai user
+  session.user.role = 'user'
+post:
+  -- Mengembalikan reservasi milik user yang sedang login
+  result = Reservasi.allInstances()->select(r | r.user = session.user)
+
+
+context IReservasiMgt::updateStatus(reservasiID: String, statusBaru: String): Boolean
+pre:
+  -- Hanya admin yang boleh memperbarui status dan reservasi harus ada
+  session.user.role = 'admin' AND
+  Reservasi.allInstances()->exists(r | r.id = reservasiID)
+post:
+  -- Status reservasi diperbarui sesuai input
+  let r: Reservasi = Reservasi.allInstances()->any(r | r.id = reservasiID) in
+    r.status = statusBaru AND
+    result = true
