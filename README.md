@@ -23,7 +23,8 @@ Each interface contains method signatures, preconditions, postconditions, and in
 ## 🎥 Presentation Link
 
 You can access the project presentation here:  
-👉 [Click to View Presentation](https://www.canva.com/design/DAGhcu-Jr1M/P6Dcc9yN2g6Uevz4LnCCYw/edit?utm_content=DAGhcu-Jr1M&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton)
+👉 [Video](https://youtu.be/rTOGm58s0vw)
+👉 [Slide](https://www.canva.com/design/DAGhcu-Jr1M/P6Dcc9yN2g6Uevz4LnCCYw/edit?utm_content=DAGhcu-Jr1M&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton)
 
 ---
 
